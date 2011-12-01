@@ -1,0 +1,13 @@
+.warn{
+    display:block;
+    }
+
+.warnImg{
+    position:relative;
+    float:left;
+    }
+
+.warnTxt{
+    position:relative;
+    float:rightt;
+    }

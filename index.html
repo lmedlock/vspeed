@@ -1,87 +1,270 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset='utf-8'>
+    <head>
+        <title>V-Speed</title>
+        <script src="http://cdn.sencha.io/touch/1.1.0/sencha-touch.js" type="text/javascript"></script>
+        <link href="http://cdn.sencha.io/touch/1.1.0/resources/css/sencha-touch.css" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+            .warn{display:block; background-color:yellow; width: 200px; height:25px;}
+            .warnImg{position:relative; float:left; height:25px; width:25px;}
+            .warnTxt{position:relative; float:left; font-family:"Lucida Console"; font-size:10px; padding: 2px 3px;}
+            
+            .repProj{font-family:"Helvetica";position:relative;background-color:white;width:200px;height:150px;}
+            
+            .actProj{font-family:"Helvetica";position:relative;background-color:black;width:200px;height:150px;}
+            
+            .repSpeedTitle{font-size:22px;position:relative;padding-top:0px;height:50px;width:200px;margin-left:auto;margin-right:auto;color:black;text-align:center;}
+            
+            .actSpeedTitle{font-size:22px; position:relative; padding-top:0px; height:50px; width:200px; margin-left:auto; margin-right:auto;color:white;text-align:center;}
+            
+            .speed{position:relative, width:200px; height:75px; text-align:center; margin-top:15px; font-size: 65px;}
+            
+            .act-speed-block{letter-spacing:5px; position:relative; float:left; margin-left:32px; height:70px; width:120px; color:yellow; background-color:black; border-style:solid; border-color:yellow;}
+            
+            .rep-speed-block{letter-spacing:5px; position:relative; float:left; margin-left:32px; height:70px; width:120px; color:black; background-color:white; border-style:solid; border-color:black;}
+        </style>
 
-  <title>lmedlock/vspeed @ GitHub</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #c3bfbb;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
+        <script type="text/javascript">
+ 
+new Ext.Application({
+    launch: function() {
+        
+        Ext.regModel('vSpeed', {
+            fields: [
+                {name: 'coProj',  type: 'int'},
+                {name: 'distProj',   type: 'int'},
+                //{name: 'mood', type: 'string'},
+                //{name: 'place', type: 'string'},
+                {name: 'realProj', type: 'decimal'},
+                {name: 'actProj', type: 'decimal'}
+            ]/**,
+            calcVirt: function() {
+                var coProj = this.get('coProj');
+                var distProj = this.get('distProj');
+                var newNum = coProj + (1.5*distProj);
+        
+                this.set('virtProj', newNum);
+            }**/
+        });
+        /**
+        var myStore = new Ext.data.Store({
+            model:'vSpeed',
+            proxy:{
+                type:'sessionstorage',
+                id:'vSpeedNumProj'
+                },
+            autoLoad:true
+            });
+        **/
+        
+        var tpl = new Ext.XTemplate(
+            '<tpl>',
+            '<p>Total Number of Projects: {coProj}</p>',
+            '</tpl>'
+            );
+        var store;
+        
+        var form = new Ext.form.FormPanel({
+            scroll:'vertical',
+            items: [
+                {
+                    xtype: 'fieldset',
+                    title: 'How Many Projects are You Working?',
+                    items: [
+                        {
+                            xtype: 'selectfield',
+                            name : 'coProj',
+                            label: '# Co-Located Projects',
+                            defaults:{labelWidth:'35%'},
+                            options:[
+                                {text:'0', value:'0'},
+                                {text:'1', value:'1'},
+                                {text:'2', value:'2'},
+                                {text:'3', value:'3'},
+                                {text:'4', value:'4'},
+                                {text:'5', value:'5'},
+                                {text:'6', value:'6'},
+                                {text:'7', value:'7'},
+                                {text:'8', value:'8'},
+                                {text:'9', value:'9'},
+                                {text:'10', value:'10'}
+                                ]
+                        },
+                        {
+                            xtype: 'selectfield',
+                            name : 'distProj',
+                            label: '# Distributed Projects',
+                            options:[
+                                {text:'0', value:'0'},
+                                {text:'1', value:'1'},
+                                {text:'2', value:'2'},
+                                {text:'3', value:'3'},
+                                {text:'4', value:'4'},
+                                {text:'5', value:'5'},
+                                {text:'6', value:'6'},
+                                {text:'7', value:'7'},
+                                {text:'8', value:'8'},
+                                {text:'9', value:'9'},
+                                {text:'10', value:'10'}
+                                ]
+                        },
+                                
+                    ]
+                }/**,
+                {
+                    xtype: 'fieldset',
+                    title: 'How Do You Feel Today?',
+                    defaults:{xtype:'radiofield'},
+                    items: [
+                        {
+                            name : 'mood',
+                            value:'good',
+                            label: 'Good'
+                        },
+                        {
+                            name : 'mood',
+                            value:'okay',
+                            label: 'Okay'
+                        },
+                        {
+                            name : 'mood',
+                            value:'notgreat',
+                            label: 'Not Too Great'
+                        }
+                    ]
+                },
+                {
+                    xtype: 'fieldset',
+                    title: 'Where Are You Right Now?',
+                    defaults:{xtype:'radiofield'},
+                    items: [
+                        {
+                            name : 'place',
+                            value:'office',
+                            label: 'Office'
+                        },
+                        {
+                            name : 'place',
+                            value:'client',
+                            label: 'Client Site'
+                        },
+                        {
+                            name : 'place',
+                            value:'home',
+                            label: 'Home'
+                        },
+                        {
+                            name : 'place',
+                            value:'mobile',
+                            label: 'Mobile'
+                        }
+                    ]
+                }**/,
+                {
+                    layout:'vbox',
+                    defaults: {xtype: 'button', flex: 1, style: 'margin: .5em;'},
+                    items: [
+                        {
+                            text: 'Zoom!', 
+                            ui:'confirm',
+                            handler: function(){
+                                store = [];
+                                numbers = form.getValues();
+                                coProj = parseInt(numbers['coProj']);
+                                distProj = parseInt(numbers['distProj']);
+                                realProj = coProj + distProj;
+                                actProj = (1.5*distProj)+coProj;
+                                //alert(actProj);
+                                store = new Ext.data.Store({
+                                    model:'vSpeed',
+                                    data: [
+                                        {coProj:coProj, distProj:distProj, realProj:realProj, actProj:actProj}
+                                    ],
+                                    autoLoad:true
+                                });
+                                
+                                console.log(store);
+                                
+                                var tpl = new Ext.XTemplate(
+                                    '<tpl for=".">',
+                                        '<div class="repProj">',
+                                            '<div class ="repSpeedTitle"><b>REPORTED<br/>WORKLOAD</b></div>',
+                                            '<div class ="speed">',
+                                                '<div class ="rep-speed-block">{realProj}</div>',
+                                            '</div>',
+                                        '</div>',
+                                        '<div class="actProj">',
+                                            '<div class ="actSpeedTitle" color="white"><b>ACTUAL<br/>WORKLOAD</b></div>',
+                                            '<div class ="speed">',
+                                                '<div class ="act-speed-block">{actProj}</div>',
+                                            '</div>	',
+                                        '</div>',
+                                        '<div class="warn">',
+                                            '<div class="warnImg">',
+                                                '<img src="http://src.sencha.io/50/50/http://www.gettyicons.com/free-icons/128/miscellaneous/png/64/warning_64.png" height="25px" width ="25px"/>',
+                                            '</div>',
+                                            '<div class="warnTxt">',
+                                                '<span><b>Optimal Load:</b>2 proj<br/><b>Max Load:</b>6 proj</span>',
+                                            '</div>',
+                                        '</div>',
+                                    '</tpl>'
+                                )
+                                
+                                if (!this.popup){
+                                    this.popup = new Ext.Panel({
+                                        //layout:{type:'vbox', align:'stretch'},
+                                        layout:'fit',
+                                        //defaults:{flex:3},
+                                        border:1,
+                                        height: 335,
+                                        width: 200,
+                                        modal:true,
+                                        floating:true,
+                                        centered:true,
+                                        html:coProj,
+                                        //styleHtmlContent:true,
+                                        items: new Ext.DataView({
+                                            store:store,
+                                            tpl:tpl,
+                                            itemSelector:'div.thumb-wrap'
+                                        })
+                                        
+                                        /**[
+                                            {xtype:'container',style:'background-color:white; border: 3px solid black;'},
+                                            {xtype:'container',style:'background-color:red; border: 3px solid black;'},
+                                            {
+                                                xtype:'container',
+                                                flex:1,
+                                                style:'background-color:yellow; border: 3px solid black;',
+                                                html:'<div class="warn"><div class="warnImg"><img src="http://src.sencha.io/50/50/http://www.gettyicons.com/free-icons/128/miscellaneous/png/64/warning_64.png"/></div><div class="warnTxt"><span><b>Optimal Workload:</b>2 proj<br/><b>Max Workload:</b>6 proj</span></div></div>'
+                                            }
+                                        ]**/
+                                        
+                                        });
+                                        this.popup.render(document.body);
+                                    }
+                                this.popup.show('pop')
+                                }
+                        },
+                        {
+                            text:'Reset'
+                        }
+                    ]
+                }
+            ]    
+        });
+        
+        new Ext.Panel({
+            fullscreen: true,
+            dockedItems: [{xtype:'toolbar', title:'V-Speed'}],
+            items:[form],
+            layout: 'fit',
+            styleHtmlContent: true,
+            //html: '<h2>Hello World!</h2>'
+        });
     }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #3c4044; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #3c4044; }
-    h3 { text-align: center; color: #3c4044; }
-    a { color: #3c4044; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
-
-<body>
-  <a href="https://github.com/lmedlock/vspeed"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="https://github.com/lmedlock/vspeed/zipball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a>
-      <a href="https://github.com/lmedlock/vspeed/tarball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="https://github.com/lmedlock/vspeed">vspeed</a>
-      <span class="small">by <a href="https://github.com/lmedlock">lmedlock</a></span></h1>
-
-    <div class="description">
-      virtuality speedometer
-    </div>
-
-    
-      <p>none</p>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-      <h2>Contact</h2>
-      <p> (leonard.medlock@gmail.com)<br/>      </p>
-    
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="https://github.com/lmedlock/vspeed/zipball/master">zip</a> or
-      <a href="https://github.com/lmedlock/vspeed/tarball/master">tar formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/lmedlock/vspeed</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="https://github.com/lmedlock/vspeed">lmedlock/vspeed</a>
-    </div>
-
-  </div>
-
-</body>
+});
+        </script>
+    </head>
+    <body></body>
 </html>
