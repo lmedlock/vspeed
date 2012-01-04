@@ -250,7 +250,7 @@ footer a.up{
 	cursor:pointer;
 	height:35px;
 	width:35px;
-    z-index:10001;
+    z-index:10000;
 }
 
 .warn{
@@ -349,4 +349,18 @@ footer a.up{
     background-color:white; 
     border-style:solid; 
     border-color:black;
+}
+
+#numProj{
+    font-size:200%;
+}
+
+select{
+    font-size:100%;
+}
+
+#zoom{
+    width:80px;
+    height:40px;
+    font-size:110%;
 }

@@ -49,8 +49,9 @@
                 <div class="line"></div>  <!-- Dividing line -->
                 
                 <article id="article1"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
-                    <div class="line"></div>
                     <h2>How many projects are you working?</h2><br/>
+                    <div class="line"></div>
+                    <div id="numProj">
                     <span id="col">Enter number of co-located projects:</span>
                     <select id="numCol">
                       <option value="0">0</option>
@@ -80,8 +81,9 @@
                       <option value="9">9</option>
                       <option value="10">10</option>
                     </select>
+                    </div>
                     <br/>
-                    <input type="button" value="Zoom!" onclick="vSpeed();" rel="#vspeed"/>
+                    <input type="button" id="zoom" value="Zoom!" onclick="vSpeed();" rel="#vspeed"/>
                     <div class="articleBody clear"></div>
                 </article>
                 <div class="line"></div>
