@@ -1,270 +1,131 @@
+
 <!DOCTYPE html>
 <html>
     <head>
-        <title>V-Speed</title>
-        <script src="http://cdn.sencha.io/touch/1.1.0/sencha-touch.js" type="text/javascript"></script>
-        <link href="http://cdn.sencha.io/touch/1.1.0/resources/css/sencha-touch.css" rel="stylesheet" type="text/css" />
-        <style type="text/css">
-            .warn{display:block; background-color:yellow; width: 200px; height:25px;}
-            .warnImg{position:relative; float:left; height:25px; width:25px;}
-            .warnTxt{position:relative; float:left; font-family:"Lucida Console"; font-size:10px; padding: 2px 3px;}
-            
-            .repProj{font-family:"Helvetica";position:relative;background-color:white;width:200px;height:150px;}
-            
-            .actProj{font-family:"Helvetica";position:relative;background-color:black;width:200px;height:150px;}
-            
-            .repSpeedTitle{font-size:22px;position:relative;padding-top:0px;height:50px;width:200px;margin-left:auto;margin-right:auto;color:black;text-align:center;}
-            
-            .actSpeedTitle{font-size:22px; position:relative; padding-top:0px; height:50px; width:200px; margin-left:auto; margin-right:auto;color:white;text-align:center;}
-            
-            .speed{position:relative, width:200px; height:75px; text-align:center; margin-top:15px; font-size: 65px;}
-            
-            .act-speed-block{letter-spacing:5px; position:relative; float:left; margin-left:32px; height:70px; min-width:120px; color:yellow; background-color:black; border-style:solid; border-color:yellow;}
-            
-            .rep-speed-block{letter-spacing:5px; position:relative; float:left; margin-left:32px; height:70px; min-width:120px; color:black; background-color:white; border-style:solid; border-color:black;}
-        </style>
-
-        <script type="text/javascript">
- 
-new Ext.Application({
-    launch: function() {
-        
-        Ext.regModel('vSpeed', {
-            fields: [
-                {name: 'coProj',  type: 'int'},
-                {name: 'distProj',   type: 'int'},
-                //{name: 'mood', type: 'string'},
-                //{name: 'place', type: 'string'},
-                {name: 'realProj', type: 'decimal'},
-                {name: 'actProj', type: 'decimal'}
-            ]/**,
-            calcVirt: function() {
-                var coProj = this.get('coProj');
-                var distProj = this.get('distProj');
-                var newNum = coProj + (1.5*distProj);
-        
-                this.set('virtProj', newNum);
-            }**/
-        });
-        /**
-        var myStore = new Ext.data.Store({
-            model:'vSpeed',
-            proxy:{
-                type:'sessionstorage',
-                id:'vSpeedNumProj'
-                },
-            autoLoad:true
-            });
-        **/
-        
-        var tpl = new Ext.XTemplate(
-            '<tpl>',
-            '<p>Total Number of Projects: {coProj}</p>',
-            '</tpl>'
-            );
-        var store;
-        
-        var form = new Ext.form.FormPanel({
-            scroll:'vertical',
-            items: [
-                {
-                    xtype: 'fieldset',
-                    title: 'How Many Projects are You Working?',
-                    items: [
-                        {
-                            xtype: 'selectfield',
-                            name : 'coProj',
-                            label: '# Co-Located Projects',
-                            defaults:{labelWidth:'35%'},
-                            options:[
-                                {text:'0', value:'0'},
-                                {text:'1', value:'1'},
-                                {text:'2', value:'2'},
-                                {text:'3', value:'3'},
-                                {text:'4', value:'4'},
-                                {text:'5', value:'5'},
-                                {text:'6', value:'6'},
-                                {text:'7', value:'7'},
-                                {text:'8', value:'8'},
-                                {text:'9', value:'9'},
-                                {text:'10', value:'10'}
-                                ]
-                        },
-                        {
-                            xtype: 'selectfield',
-                            name : 'distProj',
-                            label: '# Distributed Projects',
-                            options:[
-                                {text:'0', value:'0'},
-                                {text:'1', value:'1'},
-                                {text:'2', value:'2'},
-                                {text:'3', value:'3'},
-                                {text:'4', value:'4'},
-                                {text:'5', value:'5'},
-                                {text:'6', value:'6'},
-                                {text:'7', value:'7'},
-                                {text:'8', value:'8'},
-                                {text:'9', value:'9'},
-                                {text:'10', value:'10'}
-                                ]
-                        },
-                                
-                    ]
-                }/**,
-                {
-                    xtype: 'fieldset',
-                    title: 'How Do You Feel Today?',
-                    defaults:{xtype:'radiofield'},
-                    items: [
-                        {
-                            name : 'mood',
-                            value:'good',
-                            label: 'Good'
-                        },
-                        {
-                            name : 'mood',
-                            value:'okay',
-                            label: 'Okay'
-                        },
-                        {
-                            name : 'mood',
-                            value:'notgreat',
-                            label: 'Not Too Great'
-                        }
-                    ]
-                },
-                {
-                    xtype: 'fieldset',
-                    title: 'Where Are You Right Now?',
-                    defaults:{xtype:'radiofield'},
-                    items: [
-                        {
-                            name : 'place',
-                            value:'office',
-                            label: 'Office'
-                        },
-                        {
-                            name : 'place',
-                            value:'client',
-                            label: 'Client Site'
-                        },
-                        {
-                            name : 'place',
-                            value:'home',
-                            label: 'Home'
-                        },
-                        {
-                            name : 'place',
-                            value:'mobile',
-                            label: 'Mobile'
-                        }
-                    ]
-                }**/,
-                {
-                    layout:'vbox',
-                    defaults: {xtype: 'button', flex: 1, style: 'margin: .5em;'},
-                    items: [
-                        {
-                            text: 'Zoom!', 
-                            ui:'confirm',
-                            handler: function(){
-                                store = [];
-                                numbers = form.getValues();
-                                coProj = parseInt(numbers['coProj']);
-                                distProj = parseInt(numbers['distProj']);
-                                realProj = coProj + distProj;
-                                actProj = (1.5*distProj)+coProj;
-                                //alert(actProj);
-                                store = new Ext.data.Store({
-                                    model:'vSpeed',
-                                    data: [
-                                        {coProj:coProj, distProj:distProj, realProj:realProj, actProj:actProj}
-                                    ],
-                                    autoLoad:true
-                                });
-                                
-                                console.log(store);
-                                
-                                var tpl = new Ext.XTemplate(
-                                    '<tpl for=".">',
-                                        '<div class="repProj">',
-                                            '<div class ="repSpeedTitle"><b>REPORTED<br/>WORKLOAD</b></div>',
-                                            '<div class ="speed">',
-                                                '<div class ="rep-speed-block">{realProj}</div>',
-                                            '</div>',
-                                        '</div>',
-                                        '<div class="actProj">',
-                                            '<div class ="actSpeedTitle" color="white"><b>ACTUAL<br/>WORKLOAD</b></div>',
-                                            '<div class ="speed">',
-                                                '<div class ="act-speed-block">{actProj}</div>',
-                                            '</div>	',
-                                        '</div>',
-                                        '<div class="warn">',
-                                            '<div class="warnImg">',
-                                                '<img src="http://src.sencha.io/50/50/http://www.gettyicons.com/free-icons/128/miscellaneous/png/64/warning_64.png" height="25px" width ="25px"/>',
-                                            '</div>',
-                                            '<div class="warnTxt">',
-                                                '<span><b>Optimal Load:</b>2 proj<br/><b>Max Load:</b>6 proj</span>',
-                                            '</div>',
-                                        '</div>',
-                                    '</tpl>'
-                                )
-                                
-                                if (!this.popup){
-                                    this.popup = new Ext.Panel({
-                                        //layout:{type:'vbox', align:'stretch'},
-                                        layout:'fit',
-                                        //defaults:{flex:3},
-                                        border:1,
-                                        height: 335,
-                                        width: 200,
-                                        modal:true,
-                                        floating:true,
-                                        centered:true,
-                                        html:coProj,
-                                        //styleHtmlContent:true,
-                                        items: new Ext.DataView({
-                                            store:store,
-                                            tpl:tpl,
-                                            itemSelector:'div.thumb-wrap'
-                                        })
-                                        
-                                        /**[
-                                            {xtype:'container',style:'background-color:white; border: 3px solid black;'},
-                                            {xtype:'container',style:'background-color:red; border: 3px solid black;'},
-                                            {
-                                                xtype:'container',
-                                                flex:1,
-                                                style:'background-color:yellow; border: 3px solid black;',
-                                                html:'<div class="warn"><div class="warnImg"><img src="http://src.sencha.io/50/50/http://www.gettyicons.com/free-icons/128/miscellaneous/png/64/warning_64.png"/></div><div class="warnTxt"><span><b>Optimal Workload:</b>2 proj<br/><b>Max Workload:</b>6 proj</span></div></div>'
-                                            }
-                                        ]**/
-                                        
-                                        });
-                                        this.popup.render(document.body);
-                                    }
-                                this.popup.show('pop')
-                                }
-                        },
-                        {
-                            text:'Reset'
-                        }
-                    ]
-                }
-            ]    
-        });
-        
-        new Ext.Panel({
-            fullscreen: true,
-            dockedItems: [{xtype:'toolbar', title:'V-Speed'}],
-            items:[form],
-            layout: 'fit',
-            styleHtmlContent: true,
-            //html: '<h2>Hello World!</h2>'
-        });
-    }
-});
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>vSpeed</title>
+        <link rel="stylesheet" type="text/css" href="main.css" />
+        <script src="http://jquery.com/src/jquery-latest.js"></script>
+        <script src="http://cdn.jquerytools.org/1.2.6/jquery.tools.min.js"></script>
+        <script>
+            function vSpeed(){
+                var col = parseInt($('#numCol').val());
+                var dist = parseInt($('#numDist').val());
+                
+                var totalProj = col + dist;
+                var virtProj = col + 1.5*dist;
+                
+                $(".rep-speed-block").html(totalProj);
+                $(".act-speed-block").html(virtProj);
+                
+                $("input[rel]").overlay();
+            }
         </script>
+
+        <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <style type="text/css">
+        .clear {
+          zoom: 1;
+          display: block;
+        }
+        </style>
+        <![endif]-->
+        
     </head>
-    <body></body>
+    
+    <body>
+        
+        <section id="page"> <!-- Defining the #page section with the section tag -->
+            <header> <!-- Defining the header section of the page with the appropriate tag -->
+                <hgroup>
+                    <h1>vSpeed</h1>
+                    <h3>Workload as a f(virtuality)</h3>
+                </hgroup>
+            </header>
+            
+            <section id="articles"> 
+    			
+                <div class="line"></div>  <!-- Dividing line -->
+                
+                <article id="article1"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
+                    <div class="line"></div>
+                    <h2>How many projects are you working?</h2><br/>
+                    <span id="col">Enter number of co-located projects:</span>
+                    <select id="numCol">
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                    </select>
+                    <br/>
+                    <span id="dist">Enter number of distributed projects:</span>
+                    <select id="numDist">
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                    </select>
+                    <br/>
+                    <input type="button" value="Zoom!" onclick="vSpeed();" rel="#vspeed"/>
+                    <div class="articleBody clear"></div>
+                </article>
+                <div class="line"></div>
+                
+            </section>
+
+        <footer> <!-- Marking the footer section -->
+
+           <div class="line"></div>
+           
+           <p>Copyright - Stanford PBL</p> <!-- Change the copyright notice -->
+           
+           <a href="#" class="up">Go UP</a>
+           <a href="http://tutorialzine.com/2010/02/html5-css3-website-template/" class="by">Template by Tutorialzine</a>
+           
+
+        </footer>
+            
+		</section> <!-- Closing the #page section -->
+        
+        <!-- JavaScript Includes -->
+        
+        <div class="simple_overlay" id="vspeed">
+            <div class="repProj">
+                <div class ="repSpeedTitle"><b>REPORTED<br/>WORKLOAD</b></div>
+                <div class ="speed">
+                    <div class ="rep-speed-block"></div>
+                </div>
+            </div>
+            <div class="actProj">
+                <div class ="actSpeedTitle" color="white"><b>ACTUAL<br/>WORKLOAD</b></div>
+                <div class ="speed">
+                    <div class ="act-speed-block"></div>
+                </div>
+            </div>
+            <div class="warn">
+                <div class="warnImg">
+                    <img src="http://src.sencha.io/50/50/http://www.gettyicons.com/free-icons/128/miscellaneous/png/64/warning_64.png" height="25px" width ="25px"/>
+                </div>
+                <div class="warnTxt">
+                    <span><b>Optimal Load:</b>2 proj<br/><b>Max Load:</b>6 proj</span>
+                </div>
+            </div>
+        </div>
+
+    </body>
 </html>
